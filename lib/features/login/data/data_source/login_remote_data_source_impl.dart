@@ -11,9 +11,10 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
 
   LoginRemoteDataSourceImpl(this._apiService);
   @override
-  Future<ApiResult> loginWithEmail({required String phoneNumber, required String password})async {
+  Future<ApiResult> loginWithEmailOrPhoneNumber({required String email, required String password})async {
   try {
-  final data = await  _apiService.loginWithEmail({'phone_number': phoneNumber, 'password': password});
+  final data = await  _apiService.loginWithEmailOrPhoneNumber({'phone_number': email, 'password': password});
+
   return ApiSuccess(data: data);
 } catch (e) {
   return ApiError(message: e.toString());

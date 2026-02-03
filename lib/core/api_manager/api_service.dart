@@ -8,5 +8,5 @@ part 'api_service.g.dart';
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 @POST("login-email-new")
-Future<dynamic> loginWithEmail(@Body() Map<String, dynamic> body);
+Future<dynamic> loginWithEmailOrPhoneNumber(@Body() Map<String, dynamic> body);
 }

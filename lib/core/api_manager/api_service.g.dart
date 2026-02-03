@@ -22,7 +22,7 @@ class _ApiService implements ApiService {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<dynamic> loginWithEmail(Map<String, dynamic> body) async {
+  Future<dynamic> loginWithEmailOrPhoneNumber(Map<String, dynamic> body) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
