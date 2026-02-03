@@ -9,5 +9,4 @@ abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 @POST("login-email-new")
 Future<dynamic> loginWithEmail(@Body() Map<String, dynamic> body);
-  
 }
