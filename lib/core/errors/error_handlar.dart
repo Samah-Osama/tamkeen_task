@@ -20,7 +20,7 @@ class ServerFailure extends Failure {
       case DioExceptionType.badCertificate:
         return ServerFailure(errorMessage: 'Bad SSL certificate error');
       case DioExceptionType.badResponse:
-        // here i need to check on response and statuscode
+      
         return ServerFailure.fromResponse(
           dioExcep.response!.statusCode!,
           dioExcep.response!.data,
@@ -36,72 +36,55 @@ class ServerFailure extends Failure {
     }
   }
   factory ServerFailure.fromResponse(int statusCode, dynamic jsonData) {
-    switch (statusCode) {
-     
-      case 403 ||400 || 401 || 403:
-        if (jsonData["message"] != null &&
-            jsonData["message"].toString().contains(
-              "fails to match the required pattern",
-            )) {
-          return ServerFailure(
-            errorMessage:
-                "Password must contain at least:\n - 8 characters\n - One uppercase letter\n - One lowercase letter\n - One number\n - One special character.",
-          );
-        } else if (jsonData["error"]?.toString().contains(
-              'Reset code is invalid or has expired',
-            ) ??
-            false) {
-          return ServerFailure(
-            errorMessage:
-                jsonData["message"]?.toString() ??
-                jsonData["error"]?.toString() ??
-                "Unknown error",
-          );
-        }
-        return ServerFailure(
-          errorMessage:
-              jsonData["message"]?.toString() ??
-              jsonData["error"]?.toString() ??
-              "Unknown error",
-        );
+  String? message;
 
-      case 404:
-        if (jsonData["message"] != null &&
-            jsonData["message"].toString().contains(
-              'There is no account with this email address',
-            )) {
-          return ServerFailure(
-            errorMessage:
-                jsonData["message"]?.toString() ??
-                jsonData["error"]?.toString() ??
-                "Unknown error",
-          );
-        } else if (jsonData["error"]?.toString().contains(
-              "There is no account with this email address",
-            ) ??
-            false) {
-          return ServerFailure(
-            errorMessage:
-                jsonData["message"]?.toString() ??
-                jsonData["error"]?.toString() ??
-                "Unknown error",
-          );
-        } else {
-          return ServerFailure(errorMessage: 'Requested resource not found.');
-        }
-
-      case 409:
-        return ServerFailure(errorMessage: 'Account Already Exists.');
-
-      case 500:
-        return ServerFailure(
-          errorMessage: 'Internal server error. Please try again later.',
-        );
-
-      default:
-        return ServerFailure(
-          errorMessage: 'Unexpected error. Status Code: $statusCode',
-        );
-    }
+  // Try to extract message from response if it exists
+  if (jsonData is Map<String, dynamic>) {
+    message = jsonData['message']?.toString();
+  } else if (jsonData is String) {
+    message = jsonData;
   }
+
+  switch (statusCode) {
+    case 400:
+      return ServerFailure(
+        errorMessage: message ?? 'Bad request. Please check your input.',
+      );
+    case 401:
+      return ServerFailure(
+        errorMessage: message ?? 'Unauthorized access. Please log in again.',
+      );
+    case 403:
+      return ServerFailure(
+        errorMessage: message ?? 'Forbidden request. You do not have permission.',
+      );
+    case 404:
+      return ServerFailure(
+        errorMessage: message ?? 'Resource not found.',
+      );
+    case 409:
+      return ServerFailure(
+        errorMessage: message ??
+            'There is a conflict with the current state of the resource.',
+      );
+    case 422:
+      return ServerFailure(
+        errorMessage: message ?? 'Validation error. Please check the data provided.',
+      );
+    case 500:
+      return ServerFailure(
+        errorMessage: message ?? 'Internal server error. Please try again later.',
+      );
+    case 503:
+      return ServerFailure(
+        errorMessage: message ?? 'Service unavailable. Please try again later.',
+      );
+    default:
+      return ServerFailure(
+        errorMessage:
+            message ?? 'Unexpected error (Status Code: $statusCode)',
+      );
+  }
+}
+
 }

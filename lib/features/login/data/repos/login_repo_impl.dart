@@ -13,4 +13,19 @@ class LoginRepoImpl implements LoginRepo {
    return _loginRemoteDataSource.loginWithEmailOrPhoneNumber(email: email, password: password);
   }
   
+  @override
+  Future<ApiResult<dynamic>> loginWithOtp({required String phoneNumber}) {
+    return _loginRemoteDataSource.loginWithOtp(phoneNumber: phoneNumber);
+  }
+  
+  @override
+  Future<ApiResult<dynamic>> verifyOtp({required String phoneNumber, required String otp}) {
+    return _loginRemoteDataSource.verifyOtp(phoneNumber: phoneNumber, otp: otp);
+  }
+  
+  @override
+  Future<ApiResult<dynamic>> resendOtp({required String phoneNumber}) {
+    return _loginRemoteDataSource.resendOtp(phoneNumber: phoneNumber);
+  }
+  
 }

@@ -4,6 +4,7 @@ import 'package:tamkeen_task/core/routes/app_routes.dart';
 import 'package:tamkeen_task/features/login/presentation/screens/widgets/custom_button.dart';
 import 'package:tamkeen_task/features/login/presentation/screens/widgets/social_login_section.dart';
 import 'package:tamkeen_task/features/login/presentation/screens/widgets/welcome_header.dart';
+
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
   @override
@@ -18,31 +19,35 @@ class WelcomeScreen extends StatelessWidget {
               children: [
                 SizedBox(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height / 2,
+                  height: MediaQuery.of(context).size.height / 3,
                   child: Image.asset("assets/login.jpg"),
                 ),
                 const WelcomeHeader(),
-                const SizedBox(height: 48),
+                const SizedBox(height: 30),
                 CustomButton(
-                  text: "Login With email",
                   onPressed: () {
                     Navigator.pushNamed(
                       context,
                       AppRoutes.loginWithEmailScreen,
                     );
                   },
+                  child: Text(
+                    textAlign: .center,
+                    "Login With email or phone",
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 CustomButton(
-                  text: "Login With OTP",
                   onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.loginWithOtpScreen,
-                    );
+                    Navigator.pushNamed(context, AppRoutes.loginWithOtpScreen);
                   },
                   isOutlined: true,
                   foregroundColor: AppColors.primary,
+                  child: Text(
+                    "Login With OTP",
+                    style: const TextStyle(fontSize: 14),
+                  ),
                 ),
                 const SizedBox(height: 32),
                 const SocialLoginSection(),

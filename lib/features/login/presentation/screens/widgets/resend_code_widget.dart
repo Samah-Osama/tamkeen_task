@@ -1,11 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tamkeen_task/core/app_colors.dart';
+import 'package:tamkeen_task/core/utils/widgets/custom_snack_bar.dart';
+import 'package:tamkeen_task/features/login/presentation/cubits/cubit/login_cubit.dart';
 
 class ResendCodeWidget extends StatefulWidget {
-  final int timerDuration;
-
-  const ResendCodeWidget({super.key, this.timerDuration = 60});
+  final String phoneNumber;
+  const ResendCodeWidget({super.key, required this.phoneNumber});
 
   @override
   State<ResendCodeWidget> createState() => _ResendCodeWidgetState();
@@ -16,7 +19,6 @@ class _ResendCodeWidgetState extends State<ResendCodeWidget> {
   int _remainingSeconds = 0;
   bool _canResend = true;
 
-
   @override
   void dispose() {
     _timer?.cancel();
@@ -25,7 +27,7 @@ class _ResendCodeWidgetState extends State<ResendCodeWidget> {
 
   void _startTimer() {
     setState(() {
-      _remainingSeconds = widget.timerDuration;
+      _remainingSeconds = 30;
       _canResend = false;
     });
 
@@ -40,18 +42,6 @@ class _ResendCodeWidgetState extends State<ResendCodeWidget> {
         }
       });
     });
-  }
-
-  void _resendCode() {
-    if (_canResend) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Verification code sent!'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      _startTimer();
-    }
   }
 
   String _formatTime(int seconds) {
@@ -71,23 +61,19 @@ class _ResendCodeWidgetState extends State<ResendCodeWidget> {
         ),
         if (_canResend)
           TextButton(
-            onPressed: _resendCode,
+            onPressed: () {
+              _resendCode();
+            },
             style: TextButton.styleFrom(
               padding: EdgeInsets.zero,
               minimumSize: const Size(0, 0),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
-            child: GestureDetector(
-              onTap: () {
-                _startTimer();
-              },
-              child: const Text(
-                'Resend',
-                style: TextStyle(
-                  color: Color(0xFF5B5FCF),
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+            child: const Text(
+              'Resend',
+              style: TextStyle(
+                color: AppColors.primary,
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
               ),
             ),
           )
@@ -98,5 +84,17 @@ class _ResendCodeWidgetState extends State<ResendCodeWidget> {
           ),
       ],
     );
+  }
+
+  void _resendCode() {
+    if (_canResend) {
+      if (widget.phoneNumber.isEmpty) {
+        showErrorSnackBar(context, "Please enter phone number");
+        return;
+      } else {
+        _startTimer();
+        context.read<LoginCubit>().resendOtp(phoneNumber: widget.phoneNumber);
+      }
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tamkeen_task/core/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final String label;
@@ -28,7 +29,7 @@ class CustomTextField extends StatelessWidget {
         Text(
           label,
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 14,
             color: Colors.grey[700],
             fontWeight: FontWeight.w500,
           ),
@@ -45,42 +46,27 @@ class CustomTextField extends StatelessWidget {
             fillColor: const Color(0xFFF5F5F7),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey[300]!,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(
-                color: Colors.grey[300]!,
-                width: 1,
-              ),
+              borderSide: BorderSide(color: Colors.grey[300]!, width: 1),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Color(0xFF5B5FCF),
-                width: 2,
-              ),
+              borderSide: const BorderSide(color: AppColors.primary, width: 2),
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Colors.red,
-                width: 1,
-              ),
+              borderSide: const BorderSide(color: Colors.red, width: 1),
             ),
             focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(
-                color: Colors.red,
-                width: 2,
-              ),
+              borderSide: const BorderSide(color: Colors.red, width: 2),
             ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
-              vertical: 16,
+              vertical: 12,
             ),
             suffixIcon: suffixIcon,
             counterText: '',

@@ -19,18 +19,18 @@ class SocialLoginSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SocialLoginButton(
-              icon: Icons.facebook,
               backgroundColor: const Color(0xFF3B5998),
+              child: Icon(Icons.facebook, color: Colors.white),
             ),
 
             SocialLoginButton(
-              icon: Icons.g_mobiledata,
-              backgroundColor: const Color(0xFFDB4437),
+              backgroundColor: const Color.fromARGB(255, 210, 41, 26),
+              child: Icon(Icons.g_mobiledata, color: Colors.white),
             ),
 
             SocialLoginButton(
-              icon: Icons.business,
               backgroundColor: const Color(0xFF0077B5),
+              child: Image.asset("assets/linkedin.png"),
             ),
           ],
         ),

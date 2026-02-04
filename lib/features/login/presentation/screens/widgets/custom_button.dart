@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tamkeen_task/core/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
-  final String text;
+  final Widget child;
   final VoidCallback onPressed;
   final bool isOutlined;
   final Color backgroundColor;
@@ -12,9 +12,10 @@ class CustomButton extends StatelessWidget {
 
   const CustomButton({
     super.key,
-    required this.text,
+    required this.child,
     required this.onPressed,
     this.isOutlined = false,
+
     this.backgroundColor = AppColors.primary,
     this.foregroundColor = Colors.white,
     this.borderColor,
@@ -23,48 +24,49 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width / 2,
-      height: 56,
-      child:
-          isOutlined
-              ? OutlinedButton(
-                onPressed: onPressed,
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: foregroundColor,
-                  side: BorderSide(
-                    color: borderColor ?? backgroundColor,
-                    width: 1.5,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28),
-                  ),
+      width: MediaQuery.of(context).size.width / 1.5,
+      height: 45,
+      child: isOutlined
+          ? OutlinedButton(
+              onPressed: onPressed,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: foregroundColor,
+                side: BorderSide(
+                  color: borderColor ?? backgroundColor,
+                  width: 1.5,
                 ),
-                child: Text(
-                  text,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              )
-              : ElevatedButton(
-                onPressed: onPressed,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: backgroundColor,
-                  foregroundColor: foregroundColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28),
-                  ),
-                  elevation: 0,
-                ),
-                child: Text(
-                  text,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
                 ),
               ),
+              child: child,
+              // child: Text(
+              //   text,
+              //   style: const TextStyle(
+              //     fontSize: 16,
+              //     fontWeight: FontWeight.w600,
+              //   ),
+              // ),
+            )
+          : ElevatedButton(
+              onPressed: onPressed,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: backgroundColor,
+                foregroundColor: foregroundColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                elevation: 0,
+              ),
+              child: child,
+              // child: Text(
+              //   text,
+              //   style: const TextStyle(
+              //     fontSize: 16,
+              //     fontWeight: FontWeight.w600,
+              //   ),
+              // ),
+            ),
     );
   }
 }

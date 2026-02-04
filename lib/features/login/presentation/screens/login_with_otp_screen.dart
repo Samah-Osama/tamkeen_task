@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tamkeen_task/core/app_colors.dart';
 import 'package:tamkeen_task/core/helper/validator.dart';
 import 'package:tamkeen_task/core/routes/app_routes.dart';
+import 'package:tamkeen_task/core/utils/widgets/custom_snack_bar.dart';
 import 'package:tamkeen_task/core/utils/widgets/custom_text_filed.dart';
-import 'package:tamkeen_task/features/login/presentation/screens/widgets/resend_code_widget.dart';
+import 'package:tamkeen_task/features/login/presentation/cubits/cubit/login_cubit.dart';
 import 'widgets/custom_button.dart';
 
 class LoginWithOTPScreen extends StatefulWidget {
@@ -23,19 +25,8 @@ class _LoginWithOTPScreenState extends State<LoginWithOTPScreen> {
     super.dispose();
   }
 
-  void _sendVerificationCode() {
-    if (_formKey.currentState!.validate()) {
-      Navigator.pushNamed(
-        context,
-        '/verification-code',
-        arguments: _phoneController.text,
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-  
     return Scaffold(
       backgroundColor: AppColors.backGroundColor,
       body: SafeArea(
@@ -47,21 +38,14 @@ class _LoginWithOTPScreenState extends State<LoginWithOTPScreen> {
               children: [
                 SizedBox(
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height / 2,
+                  height: MediaQuery.of(context).size.height / 3,
                   child: Image.asset("assets/login.jpg"),
                 ),
 
                 Center(
-                  child: Text(
-                    "Login With OTP",
-                    style: TextStyle(
-                      fontSize: 36,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  ),
+                  child: Text("Login With OTP", style: TextStyle(fontSize: 30)),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 CustomTextField(
                   label: 'Phone Number',
                   controller: _phoneController,
@@ -69,13 +53,46 @@ class _LoginWithOTPScreenState extends State<LoginWithOTPScreen> {
                   validator: Validator.validateEmpty,
                 ),
                 const SizedBox(height: 32),
-                CustomButton(
-                  text: 'Send Verification Code',
-                  onPressed: _sendVerificationCode,
+                BlocConsumer<LoginCubit, LoginState>(
+                  listener: (context, state) {
+                    if (state.loginStatus == LoginStatus.loginByOtpSuccess) {
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.verificationCodeScreen,
+                        arguments: _phoneController.text,
+                      );
+                    }
+                    if (state.loginStatus == LoginStatus.loginByOtpError) {
+                      showErrorSnackBar(
+                        context,
+                        state.errorMessage ?? "un expected error",
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return CustomButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<LoginCubit>().loginWithOtp(
+                            phoneNumber: _phoneController.text,
+                          );
+                        }
+                      },
+                      child: state.loginStatus == LoginStatus.loginByOtpLoading
+                          ? Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            )
+                          : Text(
+                              'Send Verification Code',
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                    );
+                  },
                 ),
                 const SizedBox(height: 24),
-                const ResendCodeWidget(),
-                const SizedBox(height: 16),
+
                 Center(
                   child: TextButton(
                     onPressed: () {
@@ -87,7 +104,7 @@ class _LoginWithOTPScreenState extends State<LoginWithOTPScreen> {
                     child: const Text(
                       'Login with Email instead',
                       style: TextStyle(
-                        color: Color(0xFF5B5FCF),
+                        color: AppColors.primary,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),
@@ -102,4 +119,3 @@ class _LoginWithOTPScreenState extends State<LoginWithOTPScreen> {
     );
   }
 }
-
