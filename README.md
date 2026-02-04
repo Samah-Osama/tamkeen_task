@@ -1,16 +1,31 @@
-# tamkeen_task
+Little Drop - Task Management & Authentication A Flutter application developed as a technical assessment, focusing on advanced authentication flows. The project implements a custom UI design and integrates with external APIs for both credential-based login and OTP (One-Time Password) verification.
 
-A new Flutter project.
+🚀 Features Dual Login Methods:
 
-## Getting Started
+Password Login: Supports both Email and Phone Number authentication through a single identifier field.
 
-This project is a starting point for a Flutter application.
+OTP Login: Implements a phone-based verification system including sending, verifying, and resending OTP codes.
 
-A few resources to get you started if this is your first Flutter project:
+Modern UI: Clean, user-friendly interface based on the "Little Drop" design.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Secure API Integration: Uses Retrofit and Dio for robust network communication with the Tamkeen Stores backend.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+🛠️ Tech Stack Framework: Flutter
+
+Network: Dio & Retrofit
+
+State Management: Cubit
+
+UI Patterns: Custom clip paths and responsive layouts.
+
+📡 API Implementation Details The project utilizes the following endpoints:
+
+POST /user-login-new: To trigger an OTP to the user's phone.
+
+POST /check-otp-new: To verify the received code.
+
+POST /login-email-new: For traditional credential entry (supports Email or Phone).
+
+🚧 Areas for Enhancement While the core functionality is complete, the following improvements are planned:
+
+Localization (L10n): Adding support for multiple languages (specifically Arabic and English) to cater to a wider user base.
